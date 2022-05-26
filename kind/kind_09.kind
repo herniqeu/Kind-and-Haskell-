@@ -1,0 +1,35 @@
+// Advanced exercises involving Lists
+
+type List <A: Type> {
+  nil
+  cons(head: A, tail: List<A>)
+}
+
+type Maybe <A: Type> {
+  none
+  some(value: A)
+}
+
+// Returns pairs of the elements of the 2 input lists on the same index
+// Ex: zip!!([1,2], ["a","b","c"]) == [{1, "a"}, {2 , "b"}]
+// Ex: zip!!(["a", "b"], [3, 5])   == [{"a", 3}, {2 , "b"}]
+zip<A: Type, B: Type>(xs: List<A>, ys: List<B>): List<Pair<A,B>>
+  case xs ys {
+      nil nil : []
+      nil cons :  []
+      cons nil : []
+      cons cons: List.cons!(Pair.new!!(xs.head, ys.head), zip!!(xs.tail, ys.tail))
+  }
+
+// Returns the smallest element of a List
+smallest(xs: List<Nat>): Nat
+ case xs {
+   nil: 0
+   cons: case xs.tail {
+     nil: xs.head
+     cons: case Nat.ltn(xs.head,xs.tail.head) { // caso xs.tail.head seja maior q xs.head [x0,x1,x2,...,xn] x1>x0
+       true: smallest(List.cons!(xs.head, xs.tail.tail)) // como x1>x0 ele ta fora da jogada
+       false: smallest(xs.tail) // aq ele ta dentro da jogada 
+     }
+   }
+ }
