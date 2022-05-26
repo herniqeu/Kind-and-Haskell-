@@ -1,0 +1,212 @@
+// Advanced exercises involving recursion
+
+type Nat {
+  zero
+  succ(pred: Nat)
+}
+
+// Doubles a number
+
+dbl(a: Nat): Nat // double
+ case a {
+     zero: 0
+     succ: Nat.succ(Nat.succ(dbl(a.pred)))
+ }
+
+// Addition
+
+add(a: Nat, b: Nat): Nat
+ case a {
+     zero: b 
+     succ: Nat.succ(add(a.pred,b))
+ }
+
+// Multiplication
+
+mul(a: Nat, b: Nat): Nat
+ case a { 
+     zero: 0
+     succ: Nat.add(mul(a.pred,b),b)
+ }
+
+// Subtraction
+
+// 4 - 5 = 0
+// 5 - 4 = 1
+sub(a: Nat, b: Nat): Nat
+ case a b {
+     succ zero: a 
+     succ succ : sub(a.pred, b.pred)  
+}
+
+// Factorial
+
+// 4! = 24
+fac(a: Nat): Nat 
+  case a {
+      zero: 1
+      succ: Nat.mul(a,fac(a.pred))
+  }
+
+// Division
+// 1 / 2 = 0
+// x / 0 = 0
+// 5 / 2 = 2
+
+div(a: Nat, b: Nat): Nat // division
+  case a  {
+      zero: 0
+      succ: Nat.succ(div(Nat.sub(a,b),b))
+
+// Equal
+
+eql(a: Nat, b: Nat)
+ case a {
+     zero: case b {
+         zero: true
+         succ : false
+     }
+     succ: case b {
+         zero: false
+         succ: case Nat.sub(a,b){
+             zero: case Nat.sub(b,a){
+                 zero: true
+                 succ: false
+             }
+             succ: false
+         }
+     }
+ }
+
+// Do not use the "not" function to create the functions below
+
+// Greater than
+// 2 > 1 = True
+// 3 > 3 = False
+
+gtn(a: Nat, b: Nat): Bool // if A > B == True else false
+  case a {
+      zero: false
+      succ: case Nat.sub(a,b){
+          zero: false
+          succ: true
+      }
+  }
+
+// Lower than
+// 1 < 2 = True
+// 3 < 3 = False
+
+ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
+  case b {
+      zero: false
+      succ: case Nat.sub(b,a){
+          zero: false
+          succ: true
+      } 
+  }
+
+// Minimum
+// min(2, 3) = 2
+// min(4, 1) = 1
+// pq os exemplos retornam Nat e na lista tá Bool? nos exemplos max e min, enfim vou fazer com os dois casos
+
+//primeiro é min falso ou verdadeiro
+
+min(a: Nat, b: Nat): Bool
+ case a {
+     zero: case b {
+         zero: Bool.false
+         succ: Bool.true
+     }
+     succ: case b {
+         zero: Bool.false
+         succ: case Nat.sub(a,b){
+             zero: case Nat.sub(b,a) {
+                 zero: false 
+                 succ: true
+             }
+             succ: false
+         }
+     }
+ }
+
+min(a: Nat, b: Nat): Nat
+ case a {
+     zero: Nat.zero
+     succ: case b {
+         zero: Nat.zero
+         succ: case Nat.sub(a,b) {
+             zero: case Nat.sub(b,a) {
+                 zero: b // a faz mesmo efeito q a, pois a = b
+                 succ: a
+             }
+             succ: b 
+         }
+     }
+ }
+//solucao alternativa por recursao
+min(a: Nat, b: Nat): Nat
+ case a b {
+     succ succ: Nat.succ(min(a.pred,b.pred))
+ } default Nat.zero
+
+
+// Maximum
+// max(2, 3) = 3
+// max(4, 1) = 4
+// primeiro é max true ou falso
+max(a: Nat, b: Nat): Bool
+ case a {
+     zero: Bool.false
+     succ: case b {
+         zero: Bool.true
+         succ: case Nat.sub(a,b) {
+             zero: Bool.false
+             succ: Bool.true
+         }
+     }
+}
+
+max(a: Nat, b: Nat): Nat
+ case a {
+     zero: case b {
+         zero: Nat.zero
+         succ: b
+     }
+     succ: case b {
+         zero: a
+         succ: case Nat.sub(a,b){
+             zero: case Nat.sub(b,a){
+                 zero: a // a = b
+                 succ: b
+             }
+             succ: a
+         }
+     }
+ }
+ //solucao alternativa por recursao
+ max(a: Nat, b: Nat): Nat  
+ case a b{
+     zero zero: Nat.zero
+     zero succ: b
+     succ zero: a
+     succ succ : Nat.succ(max(a.pred,b.pred))
+ }
+
+// Divides a number by two
+hlf(a: Nat): Nat
+ case a {
+     zero: Nat.zero
+     succ: Nat.succ(hlf(Nat.sub(a,2)))
+ }
+ 
+ // Division
+// 1 / 2 = 0
+// x / 0 = 0
+// 5 / 2 = 2
+ division(a: Nat, b: Nat): Nat
+ case a {
+     zero: Nat.zero
+     succ: Nat.succ(division(Nat.sub(a,b),b))
+ }
