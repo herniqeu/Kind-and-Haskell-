@@ -1,0 +1,30 @@
+// Basic Exercises involving Nats
+
+type Nat {
+  zero
+  succ(pred: Nat)
+}
+
+// Increment
+// 2 + 1 = 3
+// 0 + 1 = 1
+inc(a: Nat): Nat  
+ case a {
+     zero: 1
+     succ: a + 1
+ }
+
+// Decrement
+// 2 - 1 = 1
+// 0 - 1 = 0
+dec(a: Nat): Nat
+ case a {
+     zero: 0
+     succ: a - 1
+ }
+
+is_zero(a: Nat): Bool
+  case a {
+      zero: true
+      succ : false
+  }
